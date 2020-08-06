@@ -1,4 +1,4 @@
 # Chat-System
-A Chat System developed using PHP and Javascript.
+A multi-user 1-to-1 Chat System developed using AJAX, JQUERY and PHP.
 # Demo
 http://chat-system.atwebpages.com/
