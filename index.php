@@ -91,14 +91,16 @@ if(isset($_POST['log_username'])&&isset($_POST['log_password'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat System</title>
-    <link rel="stylesheet" href="stylesheet/index.css">
+    <link rel="stylesheet" href="stylesheet/style.css">
 </head>
 <body>
     <center><h1 id="head">Chat System</h1></center>
+    <label style="float: right;">~ Created By <a href="https://github.com/abhiraj-kale">Abhiraj Kale</a></label>
 <div class="login-page">
   <div class="form">
     <form class="register-form" action="index.php" method="POST">
     <h2>Register</h2>
+    <center>New? Create an account</center><br>
       <input name="sign_username" type="text" placeholder="name" minlength="8"/>
       <input name="sign_password" type="password" placeholder="password" minlength="8"/>
       <input name="sign_email" type="email" placeholder="email address"/>
@@ -108,13 +110,13 @@ if(isset($_POST['log_username'])&&isset($_POST['log_password'])){
     <div class="form">
     <form class="login-form" action="index.php" method="POST"> 
     <h2>Login</h2>
+    <center>Already have an account? Log in</center><br>
       <input name="log_username" type="text" placeholder="username/email"/>
       <input name="log_password" type="password" placeholder="password"/>
        <button><submit>login</submit></button>
     </form>
   </div>
   <br>
-  <center>~ Created By <a href="https://github.com/abhiraj-kale">Abhiraj Kale</a></center>
 </div>
 
 <script src="js/jquery.js"></script>
