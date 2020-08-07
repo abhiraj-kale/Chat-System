@@ -18,16 +18,7 @@ $(document).on('click', '.inbox_messsage', function() {
     
     $('.convo_name').find('label').first().text($(this).find('label').first().text());
     $('.convo_name').attr('id', get_convo);
-    if (receiver_id!=null) {
-        $.ajax({
-            type: "POST",
-            url: "code.php",
-            data: "set_seen="+receiver_id,
-            success: function (response) {
-                $('.unread_lists').html(response);
-            }
-        });    
-   }
+
 });
 
 setInterval(() => {
@@ -80,7 +71,17 @@ setInterval(() => {
                }
            });
 
-                      
+           if (receiver_id!=null) {
+            $.ajax({
+                type: "POST",
+                url: "code.php",
+                async:true,
+                data: "set_seen="+receiver_id,
+                success: function (response) {
+                    $('.unread_lists').html(response);
+                }
+            });    
+       }     
 
            
    }, 2000);
@@ -136,7 +137,7 @@ $('.logout').on('click',function(){
         data: "logout="+true,
         success: function (response) {
           if (response==true) {
-            window.location.replace("http://chat-system.atwebpages.com/");
+            window.location.replace("https://chat-system-php.000webhostapp.com/index.php");
           }
         }
     });
@@ -148,7 +149,7 @@ $(window).on('beforeunload',function(){
         data: "logout="+true,
         success: function (response) {
           if (response==true) {
-            window.location.replace("http://chat-system.atwebpages.com/");
+            window.location.replace("https://chat-system-php.000webhostapp.com/index.php");
           }
         }
     });

@@ -1,8 +1,8 @@
 <?php
-$servername = "fdb30.awardspace.net";
-$username = "3529139_chatsystem";
-$password = "abhiraj123";
-$dbname = "3529139_chatsystem";
+$servername = "localhost";
+$username = "id14558518_abhiraj";
+$password = "5xM%!RrK06ds69S}";
+$dbname = "id14558518_chatsystem";
 
   // Create connection
   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -11,4 +11,5 @@ $dbname = "3529139_chatsystem";
     die("Connection went wrong: " . $conn->connect_error); 
   } 
   
+  //$conn->close(); 
 ?>

@@ -3,12 +3,14 @@ require 'connect.inc.php';
 ob_start();
 session_start();
 
-$_SESSION['username'];
-$_SESSION['password'];
-$_SESSION['email'];
+$_SESSION['username']='';
+$_SESSION['password']='';
+$_SESSION['email']='';
+$_SESSION['id']='';
+$_SESSION['receiver']='';
 $_SESSION['logged_in'] = false;
 $_SESSION['account_exists'] = false;
-
+global $conn;
 if(isset($_POST['sign_username'])&&isset($_POST['sign_password'])&&isset($_POST['sign_email'])){
     if (!empty($_POST['sign_username'])&&!empty($_POST['sign_password'])&&!empty($_POST['sign_email'])) {
         global $conn;
@@ -32,7 +34,8 @@ if(isset($_POST['sign_username'])&&isset($_POST['sign_password'])&&isset($_POST[
 
 						if ($conn->query($q) === TRUE) {
 							  $_SESSION['logged_in'] = true;
-							  $_SESSION['username']=$username;
+                              $_SESSION['username']=$username;
+                              echo "Created";
 							  header('Location: ./chat.php');
 						} else {
 						 echo "<center>Couldn't create account/center> ";

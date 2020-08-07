@@ -6,7 +6,7 @@ $_SESSION['username'];
 $_SESSION['password']; 
 $_SESSION['email'];
 $_SESSION['logged_in'];
-$_SESSION['receiver'] = null;
+$_SESSION['receiver'];
 $_SESSION['id'];
 
 if($_SESSION['logged_in']==false){

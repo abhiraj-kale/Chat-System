@@ -28,8 +28,8 @@ if (isset($_POST['msg']) && !empty($_POST['msg'])) {
     $id = $_SESSION['id'];
     $receiver = $_SESSION['receiver'];
     $t=time();
-    $time = date("d/m/Y\tH:i",$t);
-    $query="INSERT INTO chat(sender, receiver, message,time) VALUES($id, $receiver , '$msg','$time')";
+    $time = date("d/m/Y  H:i",$t);
+    echo$query="INSERT INTO chat(sender, receiver, message,time) VALUES($id, $receiver , '$msg','$time')";
     if ($conn->query($query) === TRUE) {
         global $conn;
         $q = "SELECT message_id,time FROM chat WHERE sender=$id ORDER BY message_id DESC LIMIT 1;";
@@ -108,7 +108,7 @@ if (isset($_GET['text']) && !empty($_GET['text'])) {
     }
 
     if (isset($_POST['logout']) && !empty($_POST['logout'])) {
-        date_default_timezone_set('Asia/Kolkata');
+       // date_default_timezone_set('Asia/Kolkata');
         $t=time();
         $time = date("d/m/Y\tH:i",$t);
         $query = "UPDATE user_info SET status='Last seen $time' WHERE id = ".$_SESSION['id']."";
