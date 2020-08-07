@@ -37,6 +37,9 @@ $query="SELECT id FROM user_info WHERE username='".$_SESSION['username']."' OR e
                 <label id="l2">Inbox</label> <button class="logout">Log Out</button>
              </div>
              <input type="search" placeholder="Search or start new chat" class="search">
+             <div class="unread_lists">
+
+             </div>
              <div class="in_list">
 
                 <br>

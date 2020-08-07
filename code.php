@@ -100,7 +100,7 @@ if (isset($_GET['text']) && !empty($_GET['text'])) {
                 </div>";
             }
         }else {
-            echo "<label>No results found.</label>";
+            echo "false>";
         }
        }
       }
@@ -131,6 +131,52 @@ if (isset($_GET['text']) && !empty($_GET['text'])) {
                     echo $row['status'];
                 }
             }
+        }
+    }
+    if (isset($_POST['get_seen']) && !empty($_POST['get_seen'])) {
+        $query = "SELECT sender FROM chat WHERE receiver=".$_SESSION['id']." AND seen='unseen' GROUP BY sender";
+        if ($result = mysqli_query($conn,$query)) {
+            while($row = mysqli_fetch_assoc($result)){
+                if (mysqli_num_rows($result)>0) {
+                    $q = "SELECT id,username FROM `user_info` WHERE id=".$row['sender']."";
+                    if ($res = mysqli_query($conn,$q)) {
+                        if(mysqli_num_rows($res)==1){
+                            $r = mysqli_fetch_assoc($res);
+                            echo   "<div class='inbox_messsage' id='inbox_messsage'>
+                            <label class='message_name' id='".$r['id']."'>".$r['username']."</label><img src='images/new.png'>
+                            </div>";
+                        }
+                    }
+                }else {
+                    echo "seen";
+                }
+            }
+        }
+        /*
+        $query = "SELECT sender FROM chat WHERE receiver=".$_SESSION['id']." AND seen='seen' GROUP BY sender";
+        if ($result = mysqli_query($conn,$query)) {
+            while($row = mysqli_fetch_assoc($result)){
+                if (mysqli_num_rows($result)>0) {
+                    $q = "SELECT id,username FROM `user_info` WHERE id=".$row['sender']."";
+                    if ($res = mysqli_query($conn,$q)) {
+                        if(mysqli_num_rows($res)==1){
+                            $r = mysqli_fetch_assoc($res);
+                            echo   "<div class='inbox_messsage' id='inbox_messsage'>
+                            <label class='message_name' id='".$r['id']."'>".$r['username']."</label>
+                            </div>";
+                        }
+                    }
+                }
+            }
+        }
+        */
+    }
+
+    if (isset($_POST['set_seen']) && !empty($_POST['set_seen'])) {
+        $set_seen = $_POST['set_seen'];
+        $query = "UPDATE chat SET seen='seen' WHERE sender=$set_seen AND receiver=".$_SESSION['id']." ";
+        if ($conn->query($query) === TRUE) {
+
         }
     }
 ?>
