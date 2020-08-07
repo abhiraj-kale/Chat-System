@@ -13,7 +13,8 @@ $(document).on('click', '.inbox_messsage', function() {
             $('.convo').scrollTop($('.convo')[0].scrollHeight);
         }
     });
-    $('.convo_name').find('label').text($(this).find('label').text());
+    
+    $('.convo_name').find('label').first().text($(this).find('label').first().text());
     $('.convo_name').attr('id', get_convo);
     
 });
@@ -25,20 +26,35 @@ setInterval(() => {
                type: "POST",
                url: "code.php",
                data: "receive_id="+$('.receive_message').last().attr('id'),
-               success: function (response) {
-                   $('.convo table').append(response);
+               success: function (res) {
+                
+                   $('.convo table').append(res);
                    // msg_tab.click(); 
-                   var get_convo = msg_tab.find('label').attr('id');
-                   $.ajax({
-                       type: "POST",
-                       url: "code.php",
-                       data: "get_convo="+get_convo,
-                       success: function (response) {
-                           $('.convo table').html(response);
-                       }
-                   });
-                   $('.convo_name').find('label').text(msg_tab.find('label').text());
-                   $('.convo_name').attr('id', get_convo);
+                   if(msg_tab.find('label') && msg_tab.find('label').length>0){
+                        var get_convo = msg_tab.find('label').attr('id');
+                        $.ajax({
+                            type: "POST",
+                            url: "code.php",
+                            data: "get_convo="+get_convo,
+                            success: function (response) {
+                                console.log(response);
+                                $('.convo table').html(response);
+                                
+                            }
+                        });
+                   }
+                   if(res!=""){
+                    $('.convo').scrollTop($('.convo')[0].scrollHeight);
+                 }
+               }
+           });
+           //
+           $.ajax({
+               type: "POST",
+               url: "code.php",
+               data: "get_online="+$('.convo_name').attr('id'),
+               success: function (response) {
+                $('.convo_name').find('label').last().text(response);
                }
            });
      //  }
@@ -86,6 +102,20 @@ $('.search').keyup(function (e) {
 });
 
 $('.logout').on('click',function(){
+    $.ajax({
+        type: "POST",
+        url: "code.php",
+        data: "logout="+true,
+        success: function (response) {
+          if (response==true) {
+            window.location.replace("http://chat-system.atwebpages.com/");
+          }else{
+              alert('Could not LOG OUT');
+          }
+        }
+    });
+});
+$(window).on('beforeunload',function(){
     $.ajax({
         type: "POST",
         url: "code.php",

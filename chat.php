@@ -46,6 +46,7 @@ $query="SELECT id FROM user_info WHERE username='".$_SESSION['username']."' OR e
          <div class="chatbox">
                 <div class="convo_name" id="">
                     <label></label>
+                    <center><label style="font-size:20px;color:gray"></label></center>
                 </div>
                 <div class="convo">
                     <table>
@@ -58,6 +59,6 @@ $query="SELECT id FROM user_info WHERE username='".$_SESSION['username']."' OR e
      </div>
     </div>
     <script src="js/jquery.js"></script>
-    <script src="js/chats.js"></script>
+    <script src="js/chat.js"></script>
 </body>
 </html>

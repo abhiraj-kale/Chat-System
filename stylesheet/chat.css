@@ -95,13 +95,13 @@ html{
     text-align: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.678);
 }
-.convo_name label{
+.convo_name label:first-of-type{
     font-size: 30px;
     font-family: "Roboto", sans-serif;
     font-weight: lighter;
 }
 .convo{
-    height: 32em;
+    height: 31em;
     overflow-y: scroll;
 }
 .chatbox table {
@@ -111,6 +111,7 @@ html{
 .chatbox .tr{
     max-height: 100px;
 }
+
 .type-div{
     float: left;
     background-color: rgb(230, 230, 230);
@@ -138,6 +139,7 @@ html{
     margin-left: 10px;
     padding-left:10px;
     padding-right: 10px;
+    padding-bottom: 0px;
     font-family: "Roboto", sans-serif;
     margin-top: 10px;
     font-size: 15px;
@@ -152,10 +154,16 @@ html{
     margin-right: 10px;
     padding-left:10px;
     padding-right: 10px;
+    padding-bottom: 0px;
     font-family: "Roboto", sans-serif;
     margin-top: 10px;
     font-size: 15px;
     white-space:pre-wrap;
+}
+.show_time{
+    font-size: 13px;
+    float: right;
+    color: gray;
 }
 .send-div{
     float: right;

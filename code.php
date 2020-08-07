@@ -9,24 +9,35 @@ $_SESSION['logged_in'];
 $_SESSION['receiver'];
 $_SESSION['id'];
 
+date_default_timezone_set('Asia/Kolkata');
+
 if($_SESSION['logged_in']==false){
     header('Location: index.php');
 };
+
 global $conn;
+$query="SELECT id FROM user_info WHERE username='".$_SESSION['username']."' OR email='".$_SESSION['username']."'";
+   if ($result = mysqli_query($conn,$query)){
+       $row = mysqli_fetch_assoc($result);
+		 $_SESSION['id'] = $row['id'];
+}
+
 if (isset($_POST['msg']) && !empty($_POST['msg'])) {
     global $conn;
     $msg =  mysqli_real_escape_string($conn, $_POST['msg']);
     $id = $_SESSION['id'];
     $receiver = $_SESSION['receiver'];
-
-    $query="INSERT INTO chat(sender, receiver, message) VALUES($id, $receiver , '$msg')";
+    $t=time();
+    $time = date("d/m/Y\tH:i",$t);
+    $query="INSERT INTO chat(sender, receiver, message,time) VALUES($id, $receiver , '$msg','$time')";
     if ($conn->query($query) === TRUE) {
         global $conn;
-        $q = "SELECT message_id FROM chat WHERE sender=$id ORDER BY message_id DESC LIMIT 1;";
+        $q = "SELECT message_id,time FROM chat WHERE sender=$id ORDER BY message_id DESC LIMIT 1;";
         if ($result = mysqli_query($conn,$q)) {
             $row = mysqli_fetch_assoc($result);
             $message_id = $row['message_id'];
-            echo "<tr><td><div class='send_message' id='$message_id'><p>$msg</p></div></td></tr>";
+            $time = $row['time'];
+            echo "<tr><td><div class='send_message' id='$message_id'><p>$msg</p>><label class='show_time'>$time</label></div</td></tr>";
         } else{
             echo "Failure";
         }       
@@ -40,14 +51,15 @@ if (isset($_POST['receive_id']) && !empty($_POST['receive_id'])) {
     global $conn;
     $receive_id = $_POST['receive_id'];
     $receiver = $_SESSION['receiver'];
-    $q = "SELECT message_id,message FROM chat WHERE sender=$receiver AND receiver=".$_SESSION['id']." ORDER BY message_id DESC LIMIT 1";
+    $q = "SELECT message_id,message,time FROM chat WHERE sender=$receiver AND receiver=".$_SESSION['id']." ORDER BY message_id DESC LIMIT 1";
     if ($result = mysqli_query($conn,$q)) {
         if(mysqli_num_rows($result)==1){
             $row = mysqli_fetch_assoc($result);
             $message_id = $row['message_id'];
+            $time = $row['time'];
             $msg = $row['message']; 
             if($receive_id != $message_id ){
-                echo "<tr><td><div class='receive_message' id='$message_id'><p>$msg</p></div></td></tr>";
+                echo "<tr><td><div class='receive_message' id='$message_id'><p>$msg</p><label class='show_time'>$time</label></div></td></tr>";
             }
         }
         
@@ -59,16 +71,17 @@ if (isset($_POST['get_convo']) && !empty($_POST['get_convo'])) {
     $id = $_SESSION['id'];
     $receiver = $_POST['get_convo'];
     $_SESSION['receiver'] = $receiver;
-    $query = "SELECT sender,message_id,message FROM chat WHERE (sender=$id AND receiver=$receiver)OR(sender=$receiver AND receiver=$id) ORDER BY message_id";
+    $query = "SELECT sender,message_id,message,time FROM chat WHERE (sender=$id AND receiver=$receiver)OR(sender=$receiver AND receiver=$id) ORDER BY message_id";
     if ($result = mysqli_query($conn,$query)) {
         while($row = mysqli_fetch_assoc($result)){
             if (mysqli_num_rows($result)>=0) {
                 $message_id = $row['message_id'];
                 $msg = $row['message'];
+                $time = $row['time'];
                 if ($row['sender']==$id) {
-                    echo "<tr><td><div class='send_message' id='$message_id'><p>$msg</p></div></td></tr>";
+                    echo "<tr><td><div class='send_message' id='$message_id'><p>$msg</p><label class='show_time'>$time</label></div></td></tr>";
                 }else if($row['sender']==$receiver){
-                    echo "<tr><td><div class='receive_message' id='$message_id'><p>$msg</p></div></td></tr>";
+                    echo "<tr><td><div class='receive_message' id='$message_id'><p>$msg</p><label class='show_time'>$time</label></div></td></tr>";
                 }
             }
         }
@@ -95,7 +108,10 @@ if (isset($_GET['text']) && !empty($_GET['text'])) {
     }
 
     if (isset($_POST['logout']) && !empty($_POST['logout'])) {
-        $query = "UPDATE user_info SET status='Inactive' WHERE id = ".$_SESSION['id']."";
+        date_default_timezone_set('Asia/Kolkata');
+        $t=time();
+        $time = date("d/m/Y\tH:i",$t);
+        $query = "UPDATE user_info SET status='Last seen $time' WHERE id = ".$_SESSION['id']."";
         if ($conn->query($query) === TRUE) {
             $_SESSION['logged_in'] = false;
             echo true;
@@ -104,4 +120,17 @@ if (isset($_GET['text']) && !empty($_GET['text'])) {
         }
     }
 
+    if (isset($_POST['get_online']) && !empty($_POST['get_online'])) {
+        $query = "SELECT status FROM user_info WHERE id=".$_POST['get_online']."";
+        if ($result = mysqli_query($conn,$query)) {
+            if(mysqli_num_rows($result)==1){
+                $row = mysqli_fetch_assoc($result);
+                if($row['status']=='Active'){
+                    echo "Online";
+                }else {
+                    echo $row['status'];
+                }
+            }
+        }
+    }
 ?>
